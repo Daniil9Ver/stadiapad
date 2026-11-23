@@ -103,6 +103,8 @@ StadiaPad stands on the shoulders of these projects — all the hard work is the
 - Installer built with [Inno Setup](https://jrsoftware.org/isinfo.php) by Jordan Russell.
 - Application icon by [Freepik](https://www.flaticon.com/authors/freepik) from flaticon.com.
 
-Full license texts are in [`licenses/`](licenses). The embedded driver installers are unmodified official releases redistributed under their licenses.
+## License
+
+StadiaPad is released under the [MIT License](LICENSE). Third-party components keep their own licenses — full texts are in [`licenses/`](licenses). The embedded driver installers are unmodified official releases redistributed under their licenses.
 
 Not affiliated with Google, Microsoft or Nefarius Software Solutions.
