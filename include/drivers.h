@@ -19,6 +19,8 @@ void drivers_query(struct driver_status *status);
 /* Command line switches handled by the elevated helper instance of this same exe. */
 #define ARG_INSTALL_DRIVERS L"--install-drivers"
 #define ARG_UNINSTALL_DRIVERS L"--uninstall-drivers"
+/* Used by the uninstaller: removes this exe from the HidHide whitelist and un-hides Stadia devices. */
+#define ARG_CLEANUP L"--cleanup"
 
 /* Result codes of the elevated helper. */
 #define DRV_RESULT_OK 0

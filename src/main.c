@@ -671,6 +671,15 @@ static int run_helper_if_requested(void)
         {
             result = (int)drivers_uninstall_elevated();
         }
+        else if (_wcsicmp(argv[1], ARG_CLEANUP) == 0)
+        {
+            if (hidhide_available())
+            {
+                hidhide_blacklist_remove_matching(stadia_instance_filters);
+                hidhide_unwhitelist_self();
+            }
+            result = 0;
+        }
     }
     LocalFree(argv);
     return result;
