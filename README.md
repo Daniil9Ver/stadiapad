@@ -1,110 +1,87 @@
 # StadiaPad
 
-Use a **Google Stadia controller** (USB or Bluetooth) as an **Xbox 360 gamepad** in any Windows game — with one small app that lives in the system tray.
+A small Windows tray app that makes a Google Stadia controller (USB or Bluetooth) show up as an Xbox 360 controller, so games can use it.
 
-## ⬇️ Download
+## Download
 
-| | |
-|---|---|
-| **[StadiaPad-Setup.exe](https://github.com/Daniil9Ver/stadiapad/releases/latest/download/StadiaPad-Setup.exe)** | **Recommended.** Installer: choose a folder, get Start-menu and desktop shortcuts, uninstall from Windows Settings. |
-| [StadiaPad.exe](https://github.com/Daniil9Ver/stadiapad/releases/latest/download/StadiaPad.exe) | Portable version: no installation, just run it from any folder. |
+Get the latest version from [Releases](https://github.com/Daniil9Ver/stadiapad/releases/latest):
 
-Windows 10/11 x64. All versions and release notes: [Releases](https://github.com/Daniil9Ver/stadiapad/releases).
+- [StadiaPad-Setup.exe](https://github.com/Daniil9Ver/stadiapad/releases/latest/download/StadiaPad-Setup.exe) - installer (Start menu and desktop shortcuts, uninstall from Windows Settings)
+- [StadiaPad.exe](https://github.com/Daniil9Ver/stadiapad/releases/latest/download/StadiaPad.exe) - portable, runs from any folder
 
-> Windows SmartScreen may say *"Windows protected your PC"* because the files aren't code-signed yet. Click **More info → Run anyway**.
+Requires Windows 10 or 11, 64-bit. The files are not code-signed, so SmartScreen may show "Windows protected your PC" the first time. Click "More info", then "Run anyway".
 
-## The problem it solves
+## Why
 
-When Google shut Stadia down, it released a firmware update that turns the Stadia controller into a normal Bluetooth/USB controller. Windows sees it as a generic *"HID-compliant game controller"* — and **most PC games simply ignore it**, because they only support Xbox (XInput) controllers.
+After Stadia shut down, Google released a firmware update that lets the controller connect to a PC. Windows sees it as a generic HID game controller, and most games don't support those - they expect an Xbox (XInput) controller.
 
-The usual fix meant setting up **three separate tools** by hand:
+The existing workaround is to combine three tools yourself: [stadia-vigem](https://github.com/walkco/stadia-vigem) to translate the controller, the [ViGEmBus](https://github.com/nefarius/ViGEmBus) driver for the virtual Xbox controller, and [HidHide](https://github.com/nefarius/HidHide) to hide the real controller so games don't register every button press twice. HidHide has to be configured by hand, and once it is, the controller stops working whenever stadia-vigem isn't running.
 
-1. an emulator app that translates the Stadia controller into a virtual Xbox controller,
-2. the **ViGEmBus** driver that provides that virtual controller,
-3. **HidHide** plus its configuration client, to hide the real Stadia controller — otherwise games see *two* controllers and every button press counts twice (*double input*).
+StadiaPad puts this into one program:
 
-Then you had to whitelist the right app, tick the right devices, enable hiding, reboot — and repeat it all on every new PC. And with hiding enabled, the controller stopped working entirely whenever the emulator wasn't running.
+- It includes the official ViGEmBus 1.22.0 and HidHide 1.5.230 installers and offers to install them on first run.
+- It configures HidHide itself and hides the controller over both USB and Bluetooth.
+- When you exit it, the controller is un-hidden, so it still works as a normal device.
+- Vibration works over USB. Up to 4 controllers. The Stadia button acts as the Xbox Guide button.
 
-**StadiaPad does all of that in one app:**
+## Usage
 
-- 🎮 **Stadia → Xbox 360.** Games see a standard Xbox 360 controller: buttons, sticks, triggers, vibration (USB), Stadia button = Xbox Guide. Up to 4 controllers.
-- 📦 **Drivers included.** The official, signed installers of **ViGEmBus** and **HidHide** are built in. StadiaPad offers to install them on first launch — one click, one admin prompt, one restart.
-- 🙈 **No double input, no manual setup.** StadiaPad configures HidHide automatically and hides the real controller over **USB and Bluetooth**.
-- ↩️ **Your controller is never "lost".** When you exit StadiaPad, the real Stadia controller is un-hidden again.
-- 🧹 **Clean removal.** Uninstall the drivers from the tray menu, or uninstall StadiaPad from Windows Settings — it removes its settings, log and HidHide entries.
+1. Install StadiaPad and start it.
+2. If the drivers aren't installed it will ask to install them. Accept the administrator prompt and restart Windows.
+3. Start StadiaPad again and connect the controller.
 
-## How to use
+StadiaPad doesn't start with Windows. Launch it from the shortcut before playing.
 
-1. **Download** [StadiaPad-Setup.exe](https://github.com/Daniil9Ver/stadiapad/releases/latest/download/StadiaPad-Setup.exe) and install it (pick a folder, keep *Create a desktop shortcut* ticked).
-2. **Launch StadiaPad.** If the drivers are missing it asks to install them → click **Yes**, accept the administrator prompt, and **restart** Windows when asked.
-3. **Launch StadiaPad again** from the desktop shortcut. A gamepad icon appears in the tray (bottom-right).
-4. **Connect your Stadia controller** by USB cable or Bluetooth. That's it — start your game.
+Right-click the tray icon for:
 
-StadiaPad does **not** start with Windows; launch it from the shortcut when you want to play.
+- the list of connected controllers and the driver status
+- Hide original controller (on by default)
+- Reconnect
+- Install drivers / Uninstall drivers
+- Exit
 
-### Tray menu (right-click the icon)
+## Uninstalling
 
-| Item | What it does |
-|---|---|
-| *Controller 1: Stadia (USB) → Xbox 360* | Connected controllers |
-| *Drivers: installed / not installed* | Driver status |
-| *Hide original controller* | Hide the real Stadia from games (prevents double input). On by default. |
-| *Reconnect* | Re-scan controllers and drivers |
-| *Install drivers… / Uninstall drivers…* | Install or remove ViGEmBus + HidHide |
-| *Exit* | Quit and give the real controller back to Windows |
+Use Windows Settings > Apps > StadiaPad. The uninstaller asks whether to remove the drivers as well. Say no if another program (for example DS4Windows) uses ViGEmBus or HidHide, or if you plan to reinstall StadiaPad. StadiaPad's own settings, log and HidHide entries are removed either way.
 
-### Uninstalling
+## Known issues
 
-**Windows Settings → Apps → StadiaPad → Uninstall.** You'll be asked whether to remove the drivers too:
+- No vibration over Bluetooth.
+- The Assistant and Capture buttons aren't mapped.
 
-- **No** (default) — keep the drivers; reinstalling StadiaPad later works instantly, no restart.
-- **Yes** — remove ViGEmBus and HidHide as well (choose this only if no other program, e.g. DS4Windows, uses them).
+If something doesn't work, open an [issue](https://github.com/Daniil9Ver/stadiapad/issues) and attach the log from `%LOCALAPPDATA%\StadiaPad\StadiaPad.log`.
 
-### Troubleshooting
+## Building
 
-- **Game doesn't react to the controller** — make sure the tray menu says *Drivers: installed* and shows your controller; try *Reconnect*.
-- **Restart required** shown in the menu — restart Windows after installing or removing drivers.
-- **Log file** for bug reports: `%LOCALAPPDATA%\StadiaPad\StadiaPad.log` — please attach it when opening an [issue](https://github.com/Daniil9Ver/stadiapad/issues).
-
-**Known limitations:** vibration works over USB only (not Bluetooth); the Assistant and Capture buttons are not mapped yet.
-
-## Building from source
-
-Only needed if you want to change the code. Requires Visual Studio Build Tools 2022 (C++ workload) and, for the installer, [Inno Setup 6](https://jrsoftware.org/isinfo.php):
+Needs Visual Studio Build Tools 2022 (C++), and [Inno Setup 6](https://jrsoftware.org/isinfo.php) for the installer.
 
 ```
 powershell -ExecutionPolicy Bypass -File build.ps1
 ISCC.exe installer.iss
 ```
 
-Output: `bin\StadiaPad.exe` (x64, static CRT) and `bin\StadiaPad-Setup.exe`.
+This produces `bin\StadiaPad.exe` and `bin\StadiaPad-Setup.exe`.
 
-| Path | Purpose |
-|---|---|
-| `src/main.c` | App logic, tray menu, Stadia → Xbox 360 mapping |
-| `src/stadia.c`, `src/hid.c` | Reading the Stadia controller (from stadia-vigem, with lifecycle fixes) |
-| `src/hidhide.c` | Talks to the HidHide driver directly via `\\.\HidHide` |
-| `src/drivers.c` | Detects, installs and uninstalls the drivers |
-| `src/tray.c` | Tray icon and menu |
-| `installer.iss` | Inno Setup installer script |
-| `drivers/` | Official driver installers, embedded into the exe |
-| `third_party/ViGEmClient` | ViGEm client library |
+Source layout:
+
+- `src/main.c` - tray menu and the Stadia to Xbox mapping
+- `src/stadia.c`, `src/hid.c` - reading the controller (from stadia-vigem)
+- `src/hidhide.c` - talks to the HidHide driver
+- `src/drivers.c` - driver install and uninstall
+- `installer.iss` - installer script
+- `drivers/` - the official driver installers that get embedded in the exe
 
 ## Credits
 
-StadiaPad stands on the shoulders of these projects — all the hard work is theirs:
-
-- **[stadia-vigem](https://github.com/walkco/stadia-vigem)** by **walkco** — the Stadia controller → ViGEm bridge this app is based on (MIT).
-- **[Mi-ViGEm](https://github.com/grayver/Mi-ViGEm)** by **grayver** — the original project stadia-vigem was forked from (MIT).
-- **[ViGEmBus](https://github.com/nefarius/ViGEmBus)** and **[ViGEmClient](https://github.com/nefarius/ViGEmClient)** by **Benjamin Höglinger-Stelzer / Nefarius Software Solutions e.U.** — the virtual gamepad bus driver and its client library (BSD-3-Clause / MIT).
-- **[HidHide](https://github.com/nefarius/HidHide)** by **Eric Korff de Gidts** and **Benjamin Höglinger-Stelzer / Nefarius Software Solutions e.U.** — the HID device hiding filter driver (MIT).
-- Libraries credited by stadia-vigem: [hidapi](https://github.com/libusb/hidapi) (HID implementation ideas) and [zserge/tray](https://github.com/zserge/tray) (tray code).
-- Inspired by [Xiaomi_gamepad](https://github.com/irungentoo/Xiaomi_gamepad) and [mi-360](https://github.com/dancol90/mi-360).
-- Installer built with [Inno Setup](https://jrsoftware.org/isinfo.php) by Jordan Russell.
-- Application icon by [Freepik](https://www.flaticon.com/authors/freepik) from flaticon.com.
+- [stadia-vigem](https://github.com/walkco/stadia-vigem) by walkco, which StadiaPad is based on, and [Mi-ViGEm](https://github.com/grayver/Mi-ViGEm) by grayver, which stadia-vigem was forked from (MIT)
+- [ViGEmBus](https://github.com/nefarius/ViGEmBus) and [ViGEmClient](https://github.com/nefarius/ViGEmClient) by Benjamin Höglinger-Stelzer / Nefarius Software Solutions (BSD-3-Clause, MIT)
+- [HidHide](https://github.com/nefarius/HidHide) by Eric Korff de Gidts and Benjamin Höglinger-Stelzer / Nefarius Software Solutions (MIT)
+- [hidapi](https://github.com/libusb/hidapi) and [zserge/tray](https://github.com/zserge/tray), credited by stadia-vigem
+- Installer made with [Inno Setup](https://jrsoftware.org/isinfo.php)
+- Icon by [Freepik](https://www.flaticon.com/authors/freepik) from flaticon.com
 
 ## License
 
-StadiaPad is released under the [MIT License](LICENSE). Third-party components keep their own licenses — full texts are in [`licenses/`](licenses). The embedded driver installers are unmodified official releases redistributed under their licenses.
+MIT, see [LICENSE](LICENSE). Third-party licenses are in [licenses/](licenses).
 
 Not affiliated with Google, Microsoft or Nefarius Software Solutions.
