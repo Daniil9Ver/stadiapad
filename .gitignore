@@ -1,0 +1,9 @@
+# build output
+bin/
+obj/
+*.obj
+*.res
+*.pdb
+
+# local machine data (contains personal paths)
+backup/
