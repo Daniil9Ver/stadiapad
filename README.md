@@ -1,37 +1,57 @@
 # StadiaPad
 
-Один `.exe`, который превращает геймпад Google Stadia (USB или Bluetooth) в виртуальный Xbox 360 геймпад.
+Use a **Google Stadia controller** (USB or Bluetooth) as an **Xbox 360 gamepad** on Windows — with one `.exe` that lives in the system tray.
 
-## Установка на новый компьютер
-1. Скопировать `bin\StadiaPad.exe` куда угодно (например, `C:\SOFT\StadiaPad\`).
-2. Запустить. Если драйверов нет — нажать «Да», подтвердить права администратора, перезагрузиться.
-3. После перезагрузки запустить StadiaPad снова (ярлыком). Программа живёт в трее; автозапуска нет — запускается только вручную.
+After Google shut Stadia down, the controller got a firmware update that lets it connect to any PC, but most games still don't recognise it. Until now that meant juggling three separate tools: an emulator app, the ViGEmBus driver and HidHide (plus its configuration client). StadiaPad combines them:
 
-## Что делает программа
-- Встроены официальные подписанные установщики **ViGEmBus 1.22.0** и **HidHide 1.5.230** (Nefarius Software Solutions); ставятся тихо при первом запуске.
-- Сама настраивает HidHide: добавляет себя в белый список, скрывает Stadia (USB и Bluetooth) от игр — без двойного ввода.
-- При выходе возвращает геймпад системе (снимает скрытие), так что без программы он виден как обычное устройство.
-- Меню в трее (правая кнопка): статус геймпада и драйверов, «Скрывать оригинальный геймпад», «Переподключить», «Установить драйверы…» / «Удалить драйверы…», «Выход».
-- Настройки: `HKCU\Software\StadiaPad`. Журнал: `%LOCALAPPDATA%\StadiaPad\StadiaPad.log`.
+- **Drivers included.** The official, signed installers of **ViGEmBus 1.22.0** and **HidHide 1.5.230** are embedded in the exe. On first launch StadiaPad offers to install them silently (one UAC prompt, then a restart).
+- **No manual HidHide setup.** StadiaPad whitelists itself and hides the real Stadia controller (USB *and* Bluetooth) from games, so there is no double input.
+- **Controller is given back on exit.** When you quit StadiaPad it un-hides the Stadia controller, so it is never "lost" while the app isn't running.
+- **Tray menu:** controller and driver status, *Hide original controller*, *Reconnect*, *Install drivers…* / *Uninstall drivers…*, *Exit*.
+- Vibration over USB, up to 4 controllers, Stadia button → Xbox Guide.
 
-## Сборка
-Нужны Visual Studio Build Tools 2022 (C++):
+## Usage
+
+1. Download / build `StadiaPad.exe` and put it anywhere (e.g. `C:\SOFT\StadiaPad\`).
+2. Run it. If the drivers are missing, click **Yes**, accept the administrator prompt and restart Windows.
+3. Run StadiaPad again (it does not autostart — launch it from a shortcut when you want to play).
+
+Settings: `HKCU\Software\StadiaPad`. Log: `%LOCALAPPDATA%\StadiaPad\StadiaPad.log`.
+
+## Building
+
+Requires Visual Studio Build Tools 2022 with the C++ workload:
+
 ```
 powershell -ExecutionPolicy Bypass -File build.ps1
 ```
-Результат: `bin\StadiaPad.exe` (x64, статический CRT — на целевом компьютере ничего доустанавливать не нужно).
 
-## Структура
-- `src/main.c` — логика приложения, меню, маппинг Stadia → Xbox 360
-- `src/stadia.c`, `src/hid.c` — чтение геймпада (из stadia-vigem, с исправлениями)
-- `src/hidhide.c` — прямое управление драйвером HidHide через `\\.\HidHide`
-- `src/drivers.c` — проверка/установка/удаление драйверов
-- `src/settings.c` — настройки
-- `src/log.c` — журнал работы
-- `drivers/` — официальные установщики, вшиваются в exe
-- `third_party/ViGEmClient` — клиентская библиотека ViGEm
+Output: `bin\StadiaPad.exe` (x64, static CRT — nothing else needs to be installed on the target PC).
 
-## Лицензии и благодарности
-- stadia-vigem (walkco), Mi-ViGEm (grayver) — MIT, см. `licenses/`
-- ViGEmClient, ViGEmBus, HidHide — Nefarius Software Solutions e.U., см. `licenses/`
-- Иконка — Freepik / flaticon.com
+## Project layout
+
+| Path | Purpose |
+|---|---|
+| `src/main.c` | App logic, tray menu, Stadia → Xbox 360 mapping |
+| `src/stadia.c`, `src/hid.c` | Reading the Stadia controller (from stadia-vigem, with lifecycle fixes) |
+| `src/hidhide.c` | Talks to the HidHide driver directly via `\\.\HidHide` |
+| `src/drivers.c` | Detects, installs and uninstalls the drivers |
+| `src/tray.c` | Tray icon and menu |
+| `drivers/` | Official driver installers, embedded into the exe |
+| `third_party/ViGEmClient` | ViGEm client library |
+
+## Credits
+
+StadiaPad stands on the shoulders of these projects — all the hard work is theirs:
+
+- **[stadia-vigem](https://github.com/walkco/stadia-vigem)** by **walkco** — the Stadia controller → ViGEm bridge this app is based on (MIT).
+- **[Mi-ViGEm](https://github.com/grayver/Mi-ViGEm)** by **grayver** — the original project stadia-vigem was forked from (MIT).
+- **[ViGEmBus](https://github.com/nefarius/ViGEmBus)** and **[ViGEmClient](https://github.com/nefarius/ViGEmClient)** by **Benjamin Höglinger-Stelzer / Nefarius Software Solutions e.U.** — the virtual gamepad bus driver and its client library (BSD-3-Clause / MIT).
+- **[HidHide](https://github.com/nefarius/HidHide)** by **Eric Korff de Gidts** and **Benjamin Höglinger-Stelzer / Nefarius Software Solutions e.U.** — the HID device hiding filter driver (MIT).
+- Libraries credited by stadia-vigem: [hidapi](https://github.com/libusb/hidapi) (HID implementation ideas) and [zserge/tray](https://github.com/zserge/tray) (tray code).
+- Inspired by [Xiaomi_gamepad](https://github.com/irungentoo/Xiaomi_gamepad) and [mi-360](https://github.com/dancol90/mi-360).
+- Application icon by [Freepik](https://www.flaticon.com/authors/freepik) from flaticon.com.
+
+Full license texts are in [`licenses/`](licenses). The embedded driver installers are unmodified official releases redistributed under their licenses.
+
+Not affiliated with Google, Microsoft or Nefarius Software Solutions.
