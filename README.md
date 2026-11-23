@@ -40,11 +40,6 @@ Output: `bin\StadiaPad.exe` (x64, static CRT — nothing else needs to be instal
 | `drivers/` | Official driver installers, embedded into the exe |
 | `third_party/ViGEmClient` | ViGEm client library |
 
-## Contributors
-
-- **[Daniil9Ver](https://github.com/Daniil9Ver)** — author, idea, testing
-- **[Claude](https://claude.com/claude-code)** (Anthropic) — AI pair programmer: code, driver integration, documentation
-
 ## Credits
 
 StadiaPad stands on the shoulders of these projects — all the hard work is theirs:
