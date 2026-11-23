@@ -2,6 +2,14 @@
 
 Use a **Google Stadia controller** (USB or Bluetooth) as an **Xbox 360 gamepad** on Windows — with one `.exe` that lives in the system tray.
 
+## ⬇️ Download
+
+**[Download StadiaPad.exe (latest release)](https://github.com/Daniil9Ver/stadiapad/releases/latest/download/StadiaPad.exe)** — ready to use, no building or extra installs needed. Windows 10/11 x64.
+
+All versions and release notes: [Releases](https://github.com/Daniil9Ver/stadiapad/releases).
+
+> Windows SmartScreen may say *"Windows protected your PC"* because the exe isn't code-signed. Click **More info → Run anyway**.
+
 After Google shut Stadia down, the controller got a firmware update that lets it connect to any PC, but most games still don't recognise it. Until now that meant juggling three separate tools: an emulator app, the ViGEmBus driver and HidHide (plus its configuration client). StadiaPad combines them:
 
 - **Drivers included.** The official, signed installers of **ViGEmBus 1.22.0** and **HidHide 1.5.230** are embedded in the exe. On first launch StadiaPad offers to install them silently (one UAC prompt, then a restart).
@@ -12,15 +20,15 @@ After Google shut Stadia down, the controller got a firmware update that lets it
 
 ## Usage
 
-1. Download / build `StadiaPad.exe` and put it anywhere (e.g. `C:\SOFT\StadiaPad\`).
+1. [Download `StadiaPad.exe`](https://github.com/Daniil9Ver/stadiapad/releases/latest/download/StadiaPad.exe) and put it anywhere (e.g. `C:\SOFT\StadiaPad\`).
 2. Run it. If the drivers are missing, click **Yes**, accept the administrator prompt and restart Windows.
 3. Run StadiaPad again (it does not autostart — launch it from a shortcut when you want to play).
 
 Settings: `HKCU\Software\StadiaPad`. Log: `%LOCALAPPDATA%\StadiaPad\StadiaPad.log`.
 
-## Building
+## Building from source
 
-Requires Visual Studio Build Tools 2022 with the C++ workload:
+Only needed if you want to change the code — otherwise just use the [release](https://github.com/Daniil9Ver/stadiapad/releases/latest). Requires Visual Studio Build Tools 2022 with the C++ workload:
 
 ```
 powershell -ExecutionPolicy Bypass -File build.ps1
